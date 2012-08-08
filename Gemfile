@@ -1,3 +1,7 @@
 source :rubygems
 
-gem 'rspec'
+gem 'dinosaurus'
+
+group :test do
+  gem 'rspec'
+end
