@@ -4,26 +4,18 @@ Dinosaurus.configure do |config|
   config.api_key = ENV['API_KEY']
 end
 
-class GetName < Struct.new(:one, :two)
-
-  def self.[](one, two)
-    new(one, two).call
-  end
-
-  def all
-    combined.sort.map &to_name
-  end
+class Similar < SimpleDelegator
 
   def call
-    all.join "\n"
+    combined.map(&to_name).sort
   end
 
   def combined
-    (one + two).combination(2)
+    (one + two).permutation(2)
   end
 
   def one
-    @one ||= Dinosaurus.synonyms_of super
+    @one ||= Dinosaurus.synonyms_of first
   end
 
   def to_name
@@ -33,6 +25,22 @@ class GetName < Struct.new(:one, :two)
   end
 
   def two
-    @two ||= Dinosaurus.synonyms_of super
+    @two ||= Dinosaurus.synonyms_of last
+  end
+end
+
+class GetName < Struct.new(:words)
+
+  def self.[](words, strategy = Similar)
+    words = words.split ' '
+    new(strategy.new(words)).call
+  end
+
+  def all
+    words.call
+  end
+
+  def call
+    all.join "\n"
   end
 end
