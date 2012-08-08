@@ -4,6 +4,19 @@ Dinosaurus.configure do |config|
   config.api_key = ENV['API_KEY']
 end
 
+class Permutations < SimpleDelegator
+
+  def call
+    permutation(2).map(&to_name).sort
+  end
+
+  def to_name
+    ->(words) {
+      words.map(&:capitalize).join
+    }
+  end
+end
+
 class Similar < SimpleDelegator
 
   def call

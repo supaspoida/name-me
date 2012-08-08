@@ -13,6 +13,11 @@ class App < Sinatra::Base
     content_type :text
     GetName[params[:words], Similar]
   end
+
+  get "/permute/:words" do
+    content_type :text
+    GetName[params[:words], Permutations]
+  end
 end
 
 run App.new
