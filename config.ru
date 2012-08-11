@@ -9,6 +9,11 @@ class App < Sinatra::Base
     404
   end
 
+  get "/animal" do
+    content_type :text
+    GetName['', Animal]
+  end
+
   get "/similar/:words" do
     content_type :text
     GetName[params[:words], Similar]
